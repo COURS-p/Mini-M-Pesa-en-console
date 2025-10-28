@@ -10,3 +10,10 @@ let compte = {
   solde: 1000,
   transactions: [],
 };
+
+// Afficher le solde
+function afficherSolde() {
+  console.log(`💰 Solde actuel de ${compte.nom} : ${compte.solde}$ `);
+}
+
+afficherSolde();
