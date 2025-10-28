@@ -11,9 +11,17 @@ let compte = {
   transactions: [],
 };
 
+let compte2 = {
+  nom: "Alliance",
+  numero: "0998765432",
+  solde: 500,
+  transactions: [],
+};
+
 // Afficher le solde
-function afficherSolde() {
-  console.log(`💰 Solde actuel de ${compte.nom} : ${compte.solde}$ `);
+function afficherSoldeCompte(unCompte) {
+  console.log(`💰 Solde actuel de ${unCompte.nom} : ${unCompte.solde}$ `);
 }
 
-afficherSolde();
+afficherSoldeCompte(compte);
+afficherSoldeCompte(compte2);
