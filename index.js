@@ -38,7 +38,7 @@ function depot(montant) {
   compte.transactions.push({
     type: "depot",
     montant: montant,
-    date: new Date().toDateString(),
+    date: new Date().toLocaleString(),
   });
 
   // 4️⃣ Confirmer à l’utilisateur
@@ -70,12 +70,49 @@ function retrait(montant) {
   compte.transactions.push({
     type: "retrait",
     montant: montant,
-    date: new Date().toDateString(),
+    date: new Date().toLocaleString(),
   });
 
   // 5️⃣ Afficher un message de confirmation
   console.log(`💸 Retrait effectué : -${montant}$`);
   console.log(`💰 Nouveau solde : ${compte.solde}$`);
+}
+
+// historique des transactions
+
+function historique() {
+  console.log("");
+  console.log("📜 Historique des transactions :");
+
+  // 1️⃣ Vérifier s'il y a des transactions
+  if (compte.transactions.length === 0) {
+    console.log(`Aucune transaction pour le moment !`);
+    return;
+  }
+
+  // 2️⃣ Parcourir le tableau des transactions
+
+  for (let i = 0; i < compte.transactions.length; i++) {
+    let t = compte.transactions[i];
+    // console.log(`${i + 1} - [${t.date}] ${t.type} ${t.montant}$`);
+    console.log(
+      `${i + 1}. ${t.type.padEnd(5)} | ${t.montant.toString().padStart(5)}$ | ${
+        t.date
+      }`
+    );
+  }
+
+  // ou avec for...of
+  // for (let comptes of compte.transactions) {
+  //   console.log(
+  //     `${compte.transactions.indexOf(comptes) + 1}. Type: ${
+  //       comptes.type
+  //     }, Montant: ${comptes.montant}$, Date: ${comptes.date}`
+  //   );
+  // }
+
+  // 3️⃣ Afficher le solde final
+  console.log(`💰 Solde actuel : ${compte.solde}$`);
 }
 
 afficherSoldeCompte(compte);
@@ -87,11 +124,10 @@ depot(-200);
 console.log("");
 retrait(300);
 retrait(2000);
+historique();
 
-for (let comptes of compte.transactions) {
-  console.log(
-    `Type: ${comptes.type}, Montant: ${comptes.montant}$, Date: ${comptes.date}`
-  );
-}
+// vider l'historique
+compte.transactions = [];
+historique();
 
 // console.log(compte.transactions);
