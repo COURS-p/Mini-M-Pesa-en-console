@@ -28,7 +28,7 @@ function afficherSoldeCompte(unCompte) {
 function depot(montant) {
   // 1️⃣ Vérifier que le montant est valide
   if (montant <= 0 || isNaN(montant)) {
-    console.log("⚠️ monntant invalide !");
+    console.warn("⚠️ monntant invalide !");
     return;
   }
   // 2️⃣ Ajouter le montant au solde du compte
@@ -46,12 +46,47 @@ function depot(montant) {
   console.log(`💰 Nouveau solde : ${compte.solde}$`);
 }
 
+// retirer de l'argent
+
+function retrait(montant) {
+  // 1️⃣ Vérifier que le montant est valide
+  if (montant <= 0 || isNaN(montant)) {
+    console.log("⚠️ monntant invalide !");
+    return;
+  }
+
+  // 2️⃣ Vérifier que le solde est suffisant
+
+  if (montant > compte.solde) {
+    console.warn(`❌ solde isuffisant pour effectuer ce retrait !`);
+    console.log(`💰 Solde actuel : ${compte.solde}$`);
+    return;
+  }
+
+  // 3️⃣ Retirer le montant
+  compte.solde -= montant;
+
+  // 4️⃣ Enregistrer la transaction dans l’historique
+  compte.transactions.push({
+    type: "retrait",
+    montant: montant,
+    date: new Date().toDateString(),
+  });
+
+  // 5️⃣ Afficher un message de confirmation
+  console.log(`💸 Retrait effectué : -${montant}$`);
+  console.log(`💰 Nouveau solde : ${compte.solde}$`);
+}
+
 afficherSoldeCompte(compte);
 // afficherSoldeCompte(compte2);
 
 depot(500);
 depot(300);
 depot(-200);
+console.log("");
+retrait(300);
+retrait(2000);
 
 for (let comptes of compte.transactions) {
   console.log(
