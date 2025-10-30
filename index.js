@@ -82,7 +82,7 @@ function retrait(montant) {
 
 function historique() {
   console.log("");
-  console.log("📜 Historique des transactions :");
+  console.log("--- 📜 Historique des transactions : ---");
 
   // 1️⃣ Vérifier s'il y a des transactions
   if (compte.transactions.length === 0) {
@@ -115,19 +115,68 @@ function historique() {
   console.log(`💰 Solde actuel : ${compte.solde}$`);
 }
 
+// transfert d'argent entre deux comptes
+
+function transfert(destinataire, montant) {
+  // 1️⃣ Vérifier que le montant est valide
+  if (montant <= 0 || isNaN(montant)) {
+    console.warn("⚠️ monntant invalide !");
+    return;
+  }
+
+  // 2️⃣ Vérifier que le destinataire existe
+  if (!destinataire) {
+    console.warn("⚠️ destinataire invalide !");
+    return;
+  }
+
+  // 3️⃣ Vérifier que l'expéditeur (notre compte) a assez d'argent
+  if (montant > compte.solde) {
+    console.warn(`❌ solde insuffisant pour effectuer ce transfert !`);
+    console.log(`💰 Solde disponible : ${solde.compte}$`);
+    return;
+  }
+
+  // 4️⃣ Débiter l'expéditeur
+  compte.solde -= montant;
+  // 5️⃣ Créditer le destinataire
+  destinataire.solde += montant;
+
+  // 6️⃣ Enregistrer la transaction chez l'expéditeur
+  compte.transactions.push({
+    type: "transfert envoyé",
+    montant: montant,
+    vers: destinataire.nom,
+    date: new Date().toLocaleString(),
+  });
+
+  // 7️⃣ Enregistrer la transaction chez le destinataire
+  destinataire.transactions.push({
+    type: "transfert reçu",
+    montant: montant,
+    de: compte.nom,
+    date: new Date().toLocaleString(),
+  });
+
+  // 8️⃣ Afficher un message de succès
+  console.log(
+    `📤 Transfert de ${montant}$ vers ${destinataire.nom} effectué avec succès ✅`
+  );
+  console.log(`💰 Votre solde est de : ${compte.solde}$`);
+}
+
 afficherSoldeCompte(compte);
-// afficherSoldeCompte(compte2);
+console.log("");
+afficherSoldeCompte(compte2);
+
+console.log("\n--- Opérations ---\n");
 
 depot(500);
-depot(300);
-depot(-200);
+retrait(100);
+transfert(compte2, 200);
+
+historique();
+
 console.log("");
-retrait(300);
-retrait(2000);
-historique();
 
-// vider l'historique
-compte.transactions = [];
-historique();
-
-// console.log(compte.transactions);
+afficherSoldeCompte(compte2);
